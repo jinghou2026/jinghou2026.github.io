@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>剪辑作品集 · Video Editing Portfolio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230E0E10'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23C89B5E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0E10;
+    --bg-soft:#16161A;
+    --bg-card:#1C1C21;
+    --line:#2A2A31;
+    --text:#EDE8DF;
+    --text-dim:#9A958B;
+    --accent:#C89B5E;
+    --accent-soft:#E0C49A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .serif{font-family:'Noto Serif SC',serif}
+
+  /* ===== 布局骨架 ===== */
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(14,14,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:'Noto Serif SC',serif;font-weight:900;font-size:18px;letter-spacing:1px}
+  .logo span{color:var(--accent)}
+  nav.menu{display:flex;gap:28px;font-size:14px;color:var(--text-dim)}
+  nav.menu a{padding:6px 2px;border-bottom:2px solid transparent;transition:color .2s}
+  nav.menu a:hover{color:var(--text)}
+  nav.menu a.active{color:var(--text);border-bottom-color:var(--accent)}
+  .burger{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer}
+
+  /* ===== Hero ===== */
+  .hero{padding:90px 0 60px;border-bottom:1px solid var(--line)}
+  .hero .eyebrow{font-size:12px;letter-spacing:4px;color:var(--accent);text-transform:uppercase;margin-bottom:20px}
+  .hero h1{font-family:'Noto Serif SC',serif;font-size:clamp(32px,5vw,56px);font-weight:900;line-height:1.2;max-width:800px}
+  .hero h1 em{color:var(--accent);font-style:normal}
+  .hero p.lead{margin-top:24px;color:var(--text-dim);max-width:620px;font-size:16px;font-weight:300}
+  .hero-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:12px 24px;border:1px solid var(--line);font-size:14px;letter-spacing:1px;cursor:pointer;transition:all .2s;background:transparent;color:var(--text)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#1A1408;font-weight:500}
+  .btn.primary:hover{background:var(--accent-soft)}
+
+  /* ===== 区块标题 ===== */
+  section.block{padding:70px 0}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap}
+  .sec-head h2{font-family:'Noto Serif SC',serif;font-size:28px;font-weight:700}
+  .sec-head .hint{color:var(--text-dim);font-size:13px}
+
+  /* ===== 筛选 ===== */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+  .chip{padding:8px 16px;border:1px solid var(--line);border-radius:999px;font-size:13px;color:var(--text-dim);cursor:pointer;transition:all .2s;background:transparent}
+  .chip:hover{color:var(--text);border-color:var(--text-dim)}
+  .chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+  /* ===== 作品网格 ===== */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .card{background:var(--bg-card);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);border-color:var(--accent)}
+  .card .thumb{aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
+  .card .thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(.9);transition:transform .4s,filter .3s}
+  .card:hover .thumb img{transform:scale(1.05);filter:saturate(1.1)}
+  .card .thumb .cat{position:absolute;top:12px;left:12px;background:rgba(14,14,16,.8);backdrop-filter:blur(6px);padding:4px 10px;font-size:11px;letter-spacing:1px;color:var(--accent-soft)}
+  .card .thumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;background:rgba(14,14,16,.4);pointer-events:none}
+  .card:hover .play{opacity:1}
+  .card .play .tri{width:0;height:0;border-left:28px solid var(--accent);border-top:18px solid transparent;border-bottom:18px solid transparent}
+  .card .info{padding:18px 20px 20px}
+  .card .info h3{font-size:16px;font-weight:500;margin-bottom:6px}
+  .card .info .meta{font-size:12px;color:var(--text-dim);display:flex;gap:10px;flex-wrap:wrap}
+
+  /* ===== 作品详情 ===== */
+  .detail-back{display:inline-flex;align-items:center;gap:8px;color:var(--text-dim);font-size:13px;margin-bottom:28px;cursor:pointer}
+  .detail-back:hover{color:var(--accent)}
+  .player{width:100%;aspect-ratio:16/9;background:#000;margin-bottom:36px;border:1px solid var(--line)}
+  .player iframe{width:100%;height:100%;border:0}
+  .detail-grid{display:grid;grid-template-columns:2fr 1fr;gap:40px}
+  .detail-body h1{font-family:'Noto Serif SC',serif;font-size:clamp(24px,3.5vw,36px);font-weight:700;margin-bottom:16px;line-height:1.3}
+  .detail-body .desc{color:var(--text);font-size:15px;font-weight:300;line-height:1.9;margin-bottom:20px;white-space:pre-line}
+  .detail-body .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+  .side-box{background:var(--bg-soft);border:1px solid var(--line);padding:24px;font-size:13px}
+  .side-box .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+  .side-box .row:last-child{border-bottom:0}
+  .side-box .row .k{color:var(--text-dim)}
+  .side-box .row .v{color:var(--text);text-align:right}
+
+  /* ===== 关于 ===== */
+  .about-grid{display:grid;grid-template-columns:1fr 2fr;gap:50px;align-items:start}
+  .about-photo{aspect-ratio:3/4;background:var(--bg-card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px}
+  .about-body h2{font-family:'Noto Serif SC',serif;font-size:28px;margin-bottom:18px}
+  .about-body p{color:var(--text-dim);font-weight:300;line-height:1.9;margin-bottom:16px}
+  .skills{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
+  .skills span{padding:8px 14px;border:1px solid var(--line);font-size:12px;color:var(--accent-soft)}
+
+  /* ===== 联系 ===== */
+  .contact{background:var(--bg-soft);border-top:1px solid var(--line)}
+  .contact-inner{padding:70px 0;text-align:center}
+  .contact h2{font-family:'Noto Serif SC',serif;font-size:clamp(26px,4vw,40px);margin-bottom:16px}
+  .contact p{color:var(--text-dim);max-width:500px;margin:0 auto 30px;font-weight:300}
+  .contact .mail{font-size:20px;color:var(--accent);letter-spacing:1px}
+
+  footer{padding:30px 0;border-top:1px solid var(--line);color:var(--text-dim);font-size:12px;text-align:center}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .detail-grid{grid-template-columns:1fr}
+    .about-grid{grid-template-columns:1fr}
+    .about-photo{aspect-ratio:16/10;max-width:320px}
+  }
+  @media (max-width:600px){
+    nav.menu{display:none;position:absolute;top:64px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;padding:16px 24px;gap:16px}
+    nav.menu.open{display:flex}
+    .burger{display:block}
+    .grid{grid-template-columns:1fr}
+    .hero{padding:60px 0 40px}
+    section.block{padding:50px 0}
+  }
+  .view{display:none}
+  .view.active{display:block}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#/" class="logo">EDITOR<span>.</span>folio</a>
+    <nav class="menu" id="menu">
+      <a href="#/" data-nav="home">首页</a>
+      <a href="#/works" data-nav="works">作品</a>
+      <a href="#/about" data-nav="about">关于我</a>
+      <a href="#/contact" data-nav="contact">联系</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="菜单"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ 视图：首页 ============ -->
+<main>
+<section class="view active" id="view-home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Video Editor · 剪辑作品集</div>
+      <h1>用节奏讲故事，<br>每一帧都是<em>情绪的落点</em>。</h1>
+      <p class="lead">专注动漫混剪、口播好物、音乐可视化与氛围感短片剪辑。这里收录了我近年来的部分作品，每个作品都附有创作简述与工作分工说明。</p>
+      <div class="hero-cta">
+        <a href="#/works" class="btn primary">浏览作品</a>
+        <a href="#/about" class="btn">关于我</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="block">
+      <div class="sec-head">
+        <h2>精选作品</h2>
+        <a href="#/works" class="hint">查看全部 →</a>
+      </div>
+      <div class="grid" id="featured-grid"></div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ 视图：全部作品 ============ -->
+<section class="view" id="view-works">
+  <div class="wrap">
+    <section class="block">
+      <div class="sec-head">
+        <h2>全部作品</h2>
+        <span class="hint" id="count-label"></span>
+      </div>
+      <div class="filters" id="filters">
+        <button class="chip active" data-cat="all">全部</button>
+        <button class="chip" data-cat="anime">动漫混剪</button>
+        <button class="chip" data-cat="talk">口播好物</button>
+        <button class="chip" data-cat="music">音乐可视化</button>
+        <button class="chip" data-cat="vibe">氛围感短片</button>
+      </div>
+      <div class="grid" id="all-grid"></div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ 视图：作品详情 ============ -->
+<section class="view" id="view-detail">
+  <div class="wrap">
+    <section class="block">
+      <a class="detail-back" href="#/works" id="back-btn">← 返回作品列表</a>
+      <div id="detail-content"></div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ 视图：关于 ============ -->
+<section class="view" id="view-about">
+  <div class="wrap">
+    <section class="block">
+      <div class="about-grid">
+        <div class="about-photo">头像 / 形象照<br>（替换为你的照片）</div>
+        <div class="about-body">
+          <h2>你好，我是一名剪辑师</h2>
+          <p>这里替换成你的个人介绍：你的剪辑经历、擅长的风格、对剪辑的理解。例如：从 20XX 年开始接触视频剪辑，长期专注动漫二创混剪与商业短视频制作，擅长节奏卡点、情绪铺垫与音乐可视化表达。</p>
+          <p>工具栈以剪映专业版为主，配合 After Effects 完成特效包装，Premiere Pro 用于复杂时间线的粗剪与调色。</p>
+          <div class="skills">
+            <span>剪映专业版</span><span>Premiere Pro</span><span>After Effects</span><span>节奏卡点</span><span>调色</span><span>字幕包装</span><span>音乐可视化</span><span>口播剪辑</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============ 视图：联系 ============ -->
+<section class="view" id="view-contact">
+  <div class="contact">
+    <div class="wrap contact-inner">
+      <h2>有项目想一起做？</h2>
+      <p>无论是商单剪辑、账号代剪，还是合作混剪，欢迎邮件联系，我通常会在 24 小时内回复。</p>
+      <a href="mailto:your@email.com" class="mail">your@email.com</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 EDITOR.folio · 仅供个人作品集展示，二创作品版权归原作者所有</div>
+</footer>
+
+<script>
+/* ============================================================
+   【作品列表】—— 你只需要改这一块就行
+   每一对 { } 就是一个作品，照着格式往下加就行。
+   每个字段填什么：
+
+   id:        作品的英文编号，自己起个简单的，别和别的重复就行
+   title:     作品名称（引号里填你想展示的名字）
+   category:  分类，从下面四个里选一个填：
+              anime = 动漫混剪
+              talk  = 口播好物
+              music = 音乐可视化
+              vibe  = 氛围感短片
+   catLabel:  分类的中文显示名（网站上看到的那个标签）
+   duration:  作品时长，比如 "1分28秒"
+   year:      完成年份，比如 "2026"
+   role:      你在这个作品里负责了什么，比如 "剪辑 / 调色 / 卡点"
+   software:  用什么软件剪的，比如 "剪映专业版"
+   bvid:      ★ B站视频BV号（打开B站视频网页，网址里 BV 开头那串）
+   cover:     ★ 封面图路径，把封面图放进 assets 文件夹后填 "assets/你的图名.jpg"
+   featured:  是否在首页"精选作品"展示，true = 展示，false = 不展示
+   desc:      ★ 作品简述（引号里写你想介绍的内容，\n 表示换行）
+   ============================================================ */
+const WORKS = [
+  {
+    id:"zhoushu-kadian",
+    title:"《咒术回战》高燃卡点混剪",
+    category:"anime",
+    catLabel:"动漫混剪",
+    duration:"2分02秒",
+    year:"2026",
+    role:"剪辑 / 调色 / 卡点",
+    software:"剪映专业版",
+    bvid:"BV1LUx368ECw",   // TODO: 替换为你的BV号
+    cover:"assets/cover-zhoushu.jpg",
+    featured:true,
+    desc:"大体做的一个卡点视频，开头以一个拉开的方式开启，后续高燃卡点在鼓点处，画面以硬切为主"
+  },
+  {
+    id:"koubo",
+    title:"护肤品口播",
+    category:"talk",
+    catLabel:"口播",
+    duration:"45秒",
+    year:"2026",
+    role:"剪辑 / 音乐 / 特效",
+    software:"剪映专业版",
+    bvid:"BV1TTxG67ERD",
+    cover:"assets/cover-koubo.jpg",
+    featured:true,
+    desc:"先在开头给出疑问，为什么妈妈看起来更年轻，引入到产品，再到后续功效作用，以及具体使用后的变化，视频处理上用了较多音效，特效等"
+  },
+  {
+    id:"shijianhuiyi",
+    title:"时间回忆",
+    category:"vibe",
+    catLabel:"氛围片",
+    duration:"1分54秒",
+    year:"2026",
+    role:"剪辑 / 字幕",
+    software:"剪映专业版",
+    bvid:"BV1oUx36bEKp",
+    cover:"assets/cover-shijian.jpg",
+    featured:true,
+    desc:"以歌词作为背景随齿轮转动，整体采用暗色调，意向采用时间变化，一个人的成长，日出日落等，运用蒙版做处理等等，以年轻情侣牵手搭配画中画开头，以日出拥抱作为结束"
+  }
+];
+
+/* ============ 路由与渲染 ============ */
+const CATEGORY_LABEL = {anime:"动漫混剪",talk:"口播好物",music:"音乐可视化",vibe:"氛围感短片"};
+let currentFilter = "all";
+
+function $(id){return document.getElementById(id)}
+
+function cardHTML(w){
+  return `<div class="card" data-id="${w.id}">
+    <div class="thumb">
+      <img src="${w.cover}" alt="${w.title}" onerror="this.style.background='#222';this.removeAttribute('src')">
+      <span class="cat">${w.catLabel}</span>
+      <div class="play"><div class="tri"></div></div>
+    </div>
+    <div class="info">
+      <h3>${w.title}</h3>
+      <div class="meta"><span>${w.duration}</span><span>${w.year}</span><span>${w.role}</span></div>
+    </div>
+  </div>`;
+}
+
+function renderFeatured(){
+  const list = WORKS.filter(w=>w.featured).slice(0,3);
+  $("featured-grid").innerHTML = list.map(cardHTML).join("");
+}
+
+function renderAll(){
+  const list = currentFilter==="all" ? WORKS : WORKS.filter(w=>w.category===currentFilter);
+  $("all-grid").innerHTML = list.map(cardHTML).join("");
+  $("count-label").textContent = `共 ${list.length} 个作品`;
+}
+
+function renderDetail(id){
+  const w = WORKS.find(x=>x.id===id);
+  if(!w){ $("detail-content").innerHTML = `<p style="color:var(--text-dim)">未找到该作品</p>`; return; }
+  const embed = `https://player.bilibili.com/player.html?bvid=${w.bvid}&autoplay=0&high_quality=1`;
+  $("detail-content").innerHTML = `
+    <div class="player"><iframe src="${embed}" allowfullscreen scrolling="no"></iframe></div>
+    <div class="detail-grid">
+      <div class="detail-body">
+        <h1>${w.title}</h1>
+        <div class="desc">${w.desc}</div>
+        <div class="tags">
+          <span class="chip" style="cursor:default">${w.catLabel}</span>
+          <span class="chip" style="cursor:default">${w.duration}</span>
+          <span class="chip" style="cursor:default">${w.year}</span>
+        </div>
+      </div>
+      <div class="side-box">
+        <div class="row"><span class="k">负责内容</span><span class="v">${w.role}</span></div>
+        <div class="row"><span class="k">使用工具</span><span class="v">${w.software}</span></div>
+        <div class="row"><span class="k">时长</span><span class="v">${w.duration}</span></div>
+        <div class="row"><span class="k">年份</span><span class="v">${w.year}</span></div>
+        <div class="row"><span class="k">平台</span><span class="v">Bilibili</span></div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============ hash 路由 ============ */
+function route(){
+  const hash = location.hash || "#/";
+  const [,,seg,param] = hash.split("/");
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.querySelectorAll("nav.menu a").forEach(a=>a.classList.remove("active"));
+
+  if(seg === "works"){
+    $("view-works").classList.add("active");
+    document.querySelector('nav.menu a[data-nav="works"]').classList.add("active");
+    renderAll();
+  } else if(seg === "work" && param){
+    $("view-detail").classList.add("active");
+    document.querySelector('nav.menu a[data-nav="works"]').classList.add("active");
+    renderDetail(param);
+  } else if(seg === "about"){
+    $("view-about").classList.add("active");
+    document.querySelector('nav.menu a[data-nav="about"]').classList.add("active");
+  } else if(seg === "contact"){
+    $("view-contact").classList.add("active");
+  } else {
+    $("view-home").classList.add("active");
+    document.querySelector('nav.menu a[data-nav="home"]').classList.add("active");
+    renderFeatured();
+  }
+  window.scrollTo({top:0});
+  $("menu").classList.remove("open");
+}
+
+/* ============ 事件绑定 ============ */
+document.addEventListener("click",e=>{
+  const card = e.target.closest(".card");
+  if(card){ location.hash = "#/work/" + card.dataset.id; }
+});
+
+$("filters").addEventListener("click",e=>{
+  const chip = e.target.closest(".chip");
+  if(!chip) return;
+  document.querySelectorAll("#filters .chip").forEach(c=>c.classList.remove("active"));
+  chip.classList.add("active");
+  currentFilter = chip.dataset.cat;
+  renderAll();
+});
+
+$("burger").addEventListener("click",()=>$("menu").classList.toggle("open"));
+window.addEventListener("hashchange",route);
+window.addEventListener("DOMContentLoaded",route);
+</script>
+</body>
+</html>
