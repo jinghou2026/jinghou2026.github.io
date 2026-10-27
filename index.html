@@ -266,7 +266,7 @@ const WORKS = [
     role:"剪辑 / 调色 / 卡点",
     software:"剪映专业版",
     bvid:"BV1LUx368ECw",   // TODO: 替换为你的BV号
-    cover:"assets/cover-zhoushu.jpg",
+    cover:"cover-zhoushu.jpg",
     featured:true,
     desc:"大体做的一个卡点视频，开头以一个拉开的方式开启，后续高燃卡点在鼓点处，画面以硬切为主"
   },
@@ -280,7 +280,7 @@ const WORKS = [
     role:"剪辑 / 音乐 / 特效",
     software:"剪映专业版",
     bvid:"BV1TTxG67ERD",
-    cover:"assets/cover-koubo.jpg",
+    cover:"cover-koubo.jpg",
     featured:true,
     desc:"先在开头给出疑问，为什么妈妈看起来更年轻，引入到产品，再到后续功效作用，以及具体使用后的变化，视频处理上用了较多音效，特效等"
   },
@@ -294,7 +294,7 @@ const WORKS = [
     role:"剪辑 / 字幕",
     software:"剪映专业版",
     bvid:"BV1oUx36bEKp",
-    cover:"assets/cover-shijian.jpg",
+    cover:"cover-shijian.jpg",
     featured:true,
     desc:"以歌词作为背景随齿轮转动，整体采用暗色调，意向采用时间变化，一个人的成长，日出日落等，运用蒙版做处理等等，以年轻情侣牵手搭配画中画开头，以日出拥抱作为结束"
   }
@@ -361,7 +361,7 @@ function renderDetail(id){
 /* ============ hash 路由 ============ */
 function route(){
   const hash = location.hash || "#/";
-  const [,,seg,param] = hash.split("/");
+  const [,seg,param] = hash.split("/");
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
   document.querySelectorAll("nav.menu a").forEach(a=>a.classList.remove("active"));
 
